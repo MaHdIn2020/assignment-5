@@ -1,16 +1,12 @@
-// Next.js Middleware — runs on the Edge (before the page renders).
+// proxy.ts — Next.js 16 route protection (replaces the deprecated middleware.ts).
 //
 // WHAT IT DOES:
-//   1. Reads the `accessToken` cookie (set on login).
-//   2. Decodes the JWT payload (no verification — signing happens server-side).
+//   1. Reads the `accessToken` cookie (set on login in authStore.setAuth).
+//   2. Base64-decodes the JWT payload to extract the user's role.
+//      (Full verification still happens on the backend — this is a UX guard.)
 //   3. Gates /dashboard/tenant, /dashboard/landlord, /dashboard/admin by role.
-//   4. Unauthenticated visitors → /auth/login.
-//   5. Wrong-role visitors → their correct dashboard.
-//
-// WHY NO FULL JWT VERIFICATION HERE?
-//   Edge runtime doesn't have Node.js crypto. We do a simple Base64-decode of
-//   the payload. Full verification still happens on the backend for every
-//   protected API call — middleware is just a UX guard, not a security boundary.
+//   4. Unauthenticated visitors → /auth/login (with redirect param preserved).
+//   5. Wrong-role visitors → redirected to their correct dashboard.
 
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
@@ -34,11 +30,11 @@ function decodeJwt(token: string): JwtPayload | null {
   }
 }
 
-export function middleware(request: NextRequest) {
+// In Next.js 16 the function must be named `proxy` (not `middleware`)
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get("accessToken")?.value;
 
-  // Determine which dashboard section is being accessed
   const isTenantRoute = pathname.startsWith("/dashboard/tenant");
   const isLandlordRoute = pathname.startsWith("/dashboard/landlord");
   const isAdminRoute = pathname.startsWith("/dashboard/admin");
@@ -46,7 +42,7 @@ export function middleware(request: NextRequest) {
 
   if (!isProtected) return NextResponse.next();
 
-  // No token → redirect to login, preserving the original URL as a redirect param
+  // No token → login
   if (!token) {
     const loginUrl = new URL("/auth/login", request.url);
     loginUrl.searchParams.set("redirect", pathname);
@@ -73,8 +69,8 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Wrong role — redirect to their actual dashboard
-  const roleMap = {
+  // Wrong role → correct dashboard
+  const roleMap: Record<string, string> = {
     TENANT: "/dashboard/tenant",
     LANDLORD: "/dashboard/landlord",
     ADMIN: "/dashboard/admin",
@@ -82,7 +78,7 @@ export function middleware(request: NextRequest) {
   return NextResponse.redirect(new URL(roleMap[role], request.url));
 }
 
-// Only run middleware on dashboard routes
+// Only run on dashboard routes
 export const config = {
   matcher: ["/dashboard/:path*"],
 };

@@ -18,9 +18,9 @@ export const propertySchema = z.object({
   description: z.string().min(20, "Description must be at least 20 characters"),
   location: z.string().min(1, "Location is required"),
   city: z.string().min(1, "City is required"),
-  rentAmount: z.coerce.number().positive("Must be a positive number"),
-  bedrooms: z.coerce.number().int().min(1, "At least 1 bedroom"),
-  bathrooms: z.coerce.number().int().min(1, "At least 1 bathroom"),
+  rentAmount: z.number({ invalid_type_error: "Must be a positive number" }).positive("Must be a positive number"),
+  bedrooms: z.number({ invalid_type_error: "At least 1 bedroom" }).int().min(1, "At least 1 bedroom"),
+  bathrooms: z.number({ invalid_type_error: "At least 1 bathroom" }).int().min(1, "At least 1 bathroom"),
   categoryId: z.string().uuid("Select a category").optional(),
   images: z.array(z.string().url("Must be a valid URL")).optional().default([]),
   amenities: z.array(z.string()).optional().default([]),
@@ -181,7 +181,7 @@ export function PropertyForm({ defaultValues, onSubmit, submitLabel }: Props) {
             type="number"
             placeholder="25000"
             className={`form-input ${errors.rentAmount ? "error" : ""}`}
-            {...register("rentAmount")}
+            {...register("rentAmount", { valueAsNumber: true })}
           />
           {errors.rentAmount && (
             <p className="text-red-400 text-xs mt-1">{errors.rentAmount.message}</p>
@@ -196,7 +196,7 @@ export function PropertyForm({ defaultValues, onSubmit, submitLabel }: Props) {
             type="number"
             min={1}
             className={`form-input ${errors.bedrooms ? "error" : ""}`}
-            {...register("bedrooms")}
+            {...register("bedrooms", { valueAsNumber: true })}
           />
           {errors.bedrooms && (
             <p className="text-red-400 text-xs mt-1">{errors.bedrooms.message}</p>
@@ -211,7 +211,7 @@ export function PropertyForm({ defaultValues, onSubmit, submitLabel }: Props) {
             type="number"
             min={1}
             className={`form-input ${errors.bathrooms ? "error" : ""}`}
-            {...register("bathrooms")}
+            {...register("bathrooms", { valueAsNumber: true })}
           />
           {errors.bathrooms && (
             <p className="text-red-400 text-xs mt-1">{errors.bathrooms.message}</p>
