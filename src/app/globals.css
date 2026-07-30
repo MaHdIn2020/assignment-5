@@ -1,0 +1,146 @@
+@import "tailwindcss";
+
+/* ── Design Tokens ─────────────────────────────────────────────────────────── */
+:root {
+  --font-inter: "Inter", sans-serif;
+
+  /* Brand palette */
+  --color-primary: 139 92 246;   /* violet-500  */
+  --color-secondary: 236 72 153; /* pink-500    */
+  --color-accent: 34 197 94;     /* green-500   */
+
+  /* Status colours (used in badges) */
+  --status-pending:   234 179 8;  /* yellow-500  */
+  --status-approved:  59 130 246; /* blue-500    */
+  --status-rejected:  239 68 68;  /* red-500     */
+  --status-active:    34 197 94;  /* green-500   */
+  --status-completed: 148 163 184;/* slate-400   */
+}
+
+/* ── Base Resets ───────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  font-family: var(--font-inter);
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Utility: Glass Card ───────────────────────────────────────────────────── */
+.glass-card {
+  background: rgba(30, 41, 59, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(100, 116, 139, 0.25);
+  border-radius: 1rem;
+}
+
+/* ── Gradient Button ───────────────────────────────────────────────────────── */
+.btn-gradient {
+  background: linear-gradient(135deg, rgb(139 92 246), rgb(236 72 153));
+  color: white;
+  font-weight: 600;
+  padding: 0.625rem 1.5rem;
+  border-radius: 0.75rem;
+  transition: opacity 0.2s, transform 0.2s;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.btn-gradient:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn-gradient:active { transform: translateY(0); }
+.btn-gradient:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+/* ── Outline Button ────────────────────────────────────────────────────────── */
+.btn-outline {
+  background: transparent;
+  color: rgb(139 92 246);
+  border: 1.5px solid rgb(139 92 246);
+  font-weight: 600;
+  padding: 0.625rem 1.5rem;
+  border-radius: 0.75rem;
+  transition: background 0.2s, color 0.2s;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.btn-outline:hover {
+  background: rgb(139 92 246 / 0.12);
+}
+
+/* ── Form Input ────────────────────────────────────────────────────────────── */
+.form-input {
+  width: 100%;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgb(51 65 85);
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  color: rgb(241 245 249);
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.form-input:focus {
+  border-color: rgb(139 92 246);
+  box-shadow: 0 0 0 3px rgb(139 92 246 / 0.2);
+}
+.form-input::placeholder { color: rgb(100 116 139); }
+.form-input.error { border-color: rgb(239 68 68); }
+
+/* ── Status Badge ──────────────────────────────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.badge-pending   { background: rgb(234 179 8  / 0.15); color: rgb(234 179 8);   border: 1px solid rgb(234 179 8  / 0.3); }
+.badge-approved  { background: rgb(59  130 246/ 0.15); color: rgb(59  130 246); border: 1px solid rgb(59  130 246/ 0.3); }
+.badge-rejected  { background: rgb(239 68  68 / 0.15); color: rgb(239 68  68);  border: 1px solid rgb(239 68  68 / 0.3); }
+.badge-active    { background: rgb(34  197 94 / 0.15); color: rgb(34  197 94);  border: 1px solid rgb(34  197 94 / 0.3); }
+.badge-completed { background: rgb(148 163 184/ 0.15); color: rgb(148 163 184); border: 1px solid rgb(148 163 184/ 0.3); }
+.badge-succeeded { background: rgb(34  197 94 / 0.15); color: rgb(34  197 94);  border: 1px solid rgb(34  197 94 / 0.3); }
+.badge-failed    { background: rgb(239 68  68 / 0.15); color: rgb(239 68  68);  border: 1px solid rgb(239 68  68 / 0.3); }
+.badge-refunded  { background: rgb(148 163 184/ 0.15); color: rgb(148 163 184); border: 1px solid rgb(148 163 184/ 0.3); }
+
+/* ── Skeleton Loader ────────────────────────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg,
+    rgb(30 41 59)    25%,
+    rgb(51 65 85)    50%,
+    rgb(30 41 59)    75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 0.5rem;
+}
+
+/* ── Gradient Text ─────────────────────────────────────────────────────────── */
+.gradient-text {
+  background: linear-gradient(135deg, rgb(139 92 246), rgb(236 72 153));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Scrollbar (webkit) ────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: rgb(15 23 42); }
+::-webkit-scrollbar-thumb { background: rgb(71 85 105); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgb(139 92 246); }
