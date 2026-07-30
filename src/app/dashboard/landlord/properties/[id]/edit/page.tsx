@@ -83,7 +83,7 @@ export default function EditPropertyPage() {
         <p className="text-slate-400 text-sm mt-1 truncate">{property.title}</p>
       </div>
 
-      <div className="glass-card p-6 sm:p-8">
+      <div className="card p-6 sm:p-8">
         <PropertyForm
           defaultValues={defaults}
           onSubmit={handleUpdate}

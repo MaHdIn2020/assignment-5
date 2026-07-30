@@ -84,7 +84,7 @@ export default function LandlordRequestsPage() {
         </p>
       </div>
 
-      <div className="glass-card overflow-hidden">
+      <div className="card overflow-hidden">
         {isLoading ? (
           <div className="p-6 space-y-3">
             {Array.from({ length: 4 }).map((_, i) => (

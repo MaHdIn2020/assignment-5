@@ -104,7 +104,7 @@ function AdminContent() {
       {/* Stats grid */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-10">
         {statCards.map(({ label, val, icon: Icon, color }) => (
-          <div key={label} className="glass-card p-4 text-center">
+          <div key={label} className="card p-4 text-center">
             <Icon size={20} className={`${color} mx-auto mb-1`} />
             <p className="text-xl font-bold text-slate-100">{val}</p>
             <p className="text-xs text-slate-500 mt-0.5">{label}</p>
@@ -113,7 +113,7 @@ function AdminContent() {
       </div>
 
       {/* User management */}
-      <div className="glass-card overflow-hidden">
+      <div className="card overflow-hidden">
         <div className="p-5 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <h2 className="font-semibold text-slate-200">User Management</h2>
           {/* Search */}
@@ -247,7 +247,7 @@ function AdminContent() {
           </>
         ) : (
           <div className="p-12 text-center">
-            <p className="text-3xl mb-3">👥</p>
+            <Users size={36} className="text-slate-700 mx-auto mb-3" />
             <p className="text-slate-400">No users found.</p>
           </div>
         )}

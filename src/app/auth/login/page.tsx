@@ -67,12 +67,14 @@ function LoginForm() {
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="text-4xl mb-3">🔐</div>
+          <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-violet-600/20 flex items-center justify-center">
+            <LogIn size={24} className="text-violet-400" />
+          </div>
           <h1 className="text-2xl font-bold text-slate-100">Welcome Back</h1>
           <p className="text-slate-400 text-sm mt-1">Sign in to your RentNest account</p>
         </div>
 
-        <div className="glass-card p-8">
+        <div className="card p-8">
           <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-5">
             <div>
               <label className="block text-xs font-medium text-slate-400 mb-1.5">
@@ -119,7 +121,7 @@ function LoginForm() {
               id="login-submit-btn"
               type="submit"
               disabled={isSubmitting}
-              className="btn-gradient w-full justify-center py-3"
+              className="btn-primary w-full justify-center py-3"
             >
               <LogIn size={17} />
               {isSubmitting ? "Signing in…" : "Sign In"}

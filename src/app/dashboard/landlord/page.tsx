@@ -53,7 +53,7 @@ export default function LandlordDashboard() {
         </div>
         <Link
           href="/dashboard/landlord/properties/new"
-          className="btn-gradient text-sm"
+          className="btn-primary btn-sm"
           id="add-property-btn"
         >
           <Plus size={16} /> Add Property
@@ -67,7 +67,7 @@ export default function LandlordDashboard() {
           { label: "Available", val: availableListings, icon: Eye, color: "text-emerald-400" },
           { label: "Requests", val: "—", icon: Users, color: "text-blue-400" },
         ].map(({ label, val, icon: Icon, color }) => (
-          <div key={label} className="glass-card p-4 flex items-center gap-3">
+          <div key={label} className="card p-4 flex items-center gap-3">
             <Icon size={22} className={color} />
             <div>
               <p className="text-lg font-bold text-slate-100">{val}</p>
@@ -81,7 +81,7 @@ export default function LandlordDashboard() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
         <Link
           href="/dashboard/landlord/requests"
-          className="glass-card p-5 hover:border-violet-500/40 transition-all"
+          className="card-interactive p-5"
           id="view-requests-link"
         >
           <Users size={22} className="text-blue-400 mb-2" />
@@ -92,7 +92,7 @@ export default function LandlordDashboard() {
         </Link>
         <Link
           href="/dashboard/landlord/properties/new"
-          className="glass-card p-5 hover:border-violet-500/40 transition-all"
+          className="card-interactive p-5"
         >
           <Plus size={22} className="text-violet-400 mb-2" />
           <p className="font-semibold text-slate-100">Add New Property</p>
@@ -103,7 +103,7 @@ export default function LandlordDashboard() {
       </div>
 
       {/* Properties table */}
-      <div className="glass-card overflow-hidden">
+      <div className="card overflow-hidden">
         <div className="p-5 border-b border-slate-800 flex items-center justify-between">
           <h2 className="font-semibold text-slate-200">My Listings</h2>
           <span className="text-xs text-slate-500">{totalListings} properties</span>
@@ -151,8 +151,8 @@ export default function LandlordDashboard() {
                       <div className="flex gap-2">
                         <Link
                           href={`/dashboard/landlord/properties/${p.id}/edit`}
-                          className="btn-outline text-xs py-1.5 px-3"
-                          id={`edit-property-${p.id}`}
+          className="btn-secondary btn-sm"
+          id={`edit-property-${p.id}`}
                         >
                           <Pencil size={11} /> Edit
                         </Link>
@@ -162,7 +162,7 @@ export default function LandlordDashboard() {
                               deleteMutation.mutate(p.id);
                             }
                           }}
-                          className="text-xs text-red-400 border border-red-500/30 hover:bg-red-500/10 px-3 py-1.5 rounded-lg transition-colors"
+                          className="btn-danger btn-sm"
                           id={`delete-property-${p.id}`}
                         >
                           Delete
@@ -176,11 +176,11 @@ export default function LandlordDashboard() {
           </div>
         ) : (
           <div className="p-12 text-center">
-            <p className="text-3xl mb-3">🏘️</p>
+            <Building2 size={36} className="text-slate-700 mx-auto mb-3" />
             <p className="text-slate-400">No properties listed yet.</p>
             <Link
               href="/dashboard/landlord/properties/new"
-              className="btn-gradient mt-4 inline-flex text-sm"
+              className="btn-primary mt-4 inline-flex btn-sm"
             >
               <Plus size={15} /> Add Your First Property
             </Link>

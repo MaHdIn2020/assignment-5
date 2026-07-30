@@ -47,10 +47,10 @@ export default function HomePage() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
-            <Link href="/properties" className="btn-gradient text-base px-8 py-3">
+            <Link href="/properties" className="btn-primary btn-lg">
               <Search size={17} /> Browse Properties
             </Link>
-            <Link href="/auth/register" className="btn-outline text-base px-8 py-3">
+            <Link href="/auth/register" className="btn-secondary btn-lg">
               List Your Property
             </Link>
           </div>
@@ -94,7 +94,7 @@ export default function HomePage() {
               color: "text-emerald-400",
             },
           ].map(({ icon: Icon, title, desc, color }) => (
-            <div key={title} className="glass-card p-6 space-y-3">
+            <div key={title} className="card-interactive p-6 space-y-3">
               <Icon size={28} className={color} />
               <h3 className="font-semibold text-slate-100">{title}</h3>
               <p className="text-slate-400 text-sm leading-relaxed">{desc}</p>
@@ -135,14 +135,14 @@ export default function HomePage() {
 
       {/* ── CTA Banner ─────────────────────────────────────────────────── */}
       <section className="py-20 px-4">
-        <div className="max-w-3xl mx-auto text-center glass-card p-12 space-y-5">
+        <div className="max-w-3xl mx-auto text-center card-elevated p-12 space-y-5">
           <h2 className="text-3xl font-bold text-slate-100">
             Are you a <span className="gradient-text">Landlord?</span>
           </h2>
           <p className="text-slate-400">
             List your property for free and reach hundreds of qualified tenants.
           </p>
-          <Link href="/auth/register" className="btn-gradient text-base px-8 py-3">
+          <Link href="/auth/register" className="btn-gradient btn-lg">
             Start Listing Today
           </Link>
         </div>

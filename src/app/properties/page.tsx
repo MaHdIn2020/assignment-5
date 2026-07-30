@@ -82,7 +82,7 @@ function PropertiesContent() {
       <div className="flex flex-col lg:flex-row gap-6">
         {/* ── Filter Sidebar ────────────────────────────────────────────── */}
         <aside className="lg:w-64 shrink-0">
-          <div className="glass-card p-5 space-y-5 sticky top-20">
+          <div className="card p-5 space-y-5 sticky top-20">
             <div className="flex items-center justify-between">
               <h2 className="font-semibold text-slate-200 flex items-center gap-2">
                 <SlidersHorizontal size={16} /> Filters
@@ -191,8 +191,8 @@ function PropertiesContent() {
               ))}
             </div>
           ) : properties.length === 0 ? (
-            <div className="glass-card p-12 text-center">
-              <p className="text-4xl mb-3">🔍</p>
+            <div className="card p-12 text-center">
+              <Search size={36} className="text-slate-700 mx-auto mb-3" />
               <p className="text-slate-300 font-medium">No properties found</p>
               <p className="text-slate-500 text-sm mt-1">
                 Try adjusting or clearing your filters.

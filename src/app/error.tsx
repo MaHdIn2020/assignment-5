@@ -1,8 +1,7 @@
 "use client";
-// error.tsx — rendered by Next.js when an unhandled error bubbles up from a route.
-// Must be a Client Component ("use client") so it can use the reset() function.
 
 import { useEffect } from "react";
+import { AlertTriangle, RefreshCw } from "lucide-react";
 
 export default function GlobalError({
   error,
@@ -17,17 +16,19 @@ export default function GlobalError({
 
   return (
     <div className="min-h-[60vh] flex items-center justify-center px-4">
-      <div className="glass-card p-10 max-w-md text-center space-y-5">
-        <div className="text-5xl">🚨</div>
-        <h1 className="text-2xl font-bold text-slate-100">Oops! Something broke</h1>
+      <div className="card-elevated p-10 max-w-md text-center space-y-5">
+        <div className="w-14 h-14 mx-auto rounded-full bg-red-900/30 flex items-center justify-center">
+          <AlertTriangle size={28} className="text-red-400" />
+        </div>
+        <h1 className="text-2xl font-bold text-slate-100">Something went wrong</h1>
         <p className="text-slate-400 text-sm leading-relaxed">
           {error.message || "An unexpected error occurred. Please try again."}
         </p>
         {error.digest && (
           <p className="text-xs text-slate-600">Error ID: {error.digest}</p>
         )}
-        <button onClick={reset} className="btn-gradient">
-          Try Again
+        <button onClick={reset} className="btn-primary">
+          <RefreshCw size={16} /> Try Again
         </button>
       </div>
     </div>

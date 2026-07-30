@@ -110,7 +110,7 @@ function PaymentForm({
 
       {/* Test card hint */}
       <div className="text-xs text-slate-500 bg-slate-800/60 border border-slate-700/50 rounded-lg p-3">
-        <p className="font-medium text-slate-400 mb-1">🧪 Test card:</p>
+        <p className="font-medium text-slate-400 mb-1">Test card:</p>
         <p>Card: 4242 4242 4242 4242</p>
         <p>Expiry: any future date · CVC: any 3 digits</p>
       </div>
@@ -119,7 +119,7 @@ function PaymentForm({
         id="pay-now-btn"
         onClick={handlePay}
         disabled={loading || !stripe}
-        className="btn-gradient w-full justify-center py-3 text-base"
+        className="btn-primary w-full justify-center py-3 text-base"
       >
         <Lock size={16} />
         {loading
@@ -176,8 +176,12 @@ function PayPageContent() {
   if (initError || !clientSecret) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center px-4">
-        <div className="glass-card p-8 max-w-md text-center space-y-4">
-          <p className="text-4xl">❌</p>
+        <div className="card-elevated p-8 max-w-md text-center space-y-4">
+          <div className="w-12 h-12 rounded-full bg-red-900/30 flex items-center justify-center mx-auto">
+            <svg className="w-6 h-6 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </div>
           <p className="text-slate-300 font-medium">{initError ?? "Payment unavailable."}</p>
         </div>
       </div>
@@ -198,7 +202,7 @@ function PayPageContent() {
           </p>
         </div>
 
-        <div className="glass-card p-8">
+        <div className="card p-8">
           {/* Elements requires clientSecret to know which PaymentIntent to use */}
           <Elements stripe={stripePromise} options={{ clientSecret }}>
             <PaymentForm

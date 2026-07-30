@@ -62,14 +62,16 @@ export default function RegisterPage() {
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="text-4xl mb-3">🏠</div>
+          <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-violet-600/20 flex items-center justify-center">
+            <UserPlus size={24} className="text-violet-400" />
+          </div>
           <h1 className="text-2xl font-bold text-slate-100">Create Account</h1>
           <p className="text-slate-400 text-sm mt-1">
             Join RentNest as a Tenant or Landlord
           </p>
         </div>
 
-        <div className="glass-card p-8">
+        <div className="card p-8">
           {/* ── Role Selector ─────────────────────────────────────────────── */}
           <div className="mb-6">
             <label className="block text-xs font-medium text-slate-400 mb-2 uppercase tracking-wider">
@@ -91,7 +93,7 @@ export default function RegisterPage() {
                     className="sr-only"
                     {...register("role")}
                   />
-                  <span className="text-2xl">{role === "TENANT" ? "🔑" : "🏘️"}</span>
+                  <span className="text-xl">{role === "TENANT" ? "🔑" : "🏘️"}</span>
                   <span className="text-sm font-medium text-slate-200">
                     {role === "TENANT" ? "Tenant" : "Landlord"}
                   </span>
@@ -180,7 +182,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="btn-gradient w-full justify-center py-3 mt-2"
+              className="btn-primary w-full justify-center py-3 mt-2"
               id="register-submit-btn"
             >
               <UserPlus size={17} />

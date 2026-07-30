@@ -42,7 +42,7 @@ export function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 font-bold text-xl">
-            <span className="text-2xl">🏠</span>
+            <Home size={22} className="text-violet-400" />
             <span className="gradient-text">RentNest</span>
           </Link>
 
@@ -74,16 +74,16 @@ export function Navbar() {
                     {user.role}
                   </span>
                 </span>
-                <button onClick={handleLogout} className="btn-outline text-sm py-2 px-4">
+                <button onClick={handleLogout} className="btn-secondary btn-sm">
                   <LogOut size={14} /> Logout
                 </button>
               </div>
             ) : (
               <>
-                <Link href="/auth/login" className="btn-outline text-sm py-2 px-4">
+                <Link href="/auth/login" className="btn-secondary btn-sm">
                   <LogIn size={14} /> Login
                 </Link>
-                <Link href="/auth/register" className="btn-gradient text-sm py-2 px-4">
+                <Link href="/auth/register" className="btn-primary btn-sm">
                   <UserPlus size={14} /> Register
                 </Link>
               </>
@@ -119,7 +119,7 @@ export function Navbar() {
           ))}
           <div className="pt-2 border-t border-slate-800 space-y-2">
             {user ? (
-              <button onClick={handleLogout} className="btn-outline w-full text-sm justify-center">
+              <button onClick={handleLogout} className="btn-secondary btn-sm w-full justify-center">
                 <LogOut size={14} /> Logout
               </button>
             ) : (
@@ -127,14 +127,14 @@ export function Navbar() {
                 <Link
                   href="/auth/login"
                   onClick={() => setMobileOpen(false)}
-                  className="btn-outline w-full text-sm justify-center block text-center"
+                  className="btn-secondary btn-sm w-full justify-center block text-center"
                 >
                   Login
                 </Link>
                 <Link
                   href="/auth/register"
                   onClick={() => setMobileOpen(false)}
-                  className="btn-gradient w-full text-sm justify-center block text-center"
+                  className="btn-primary btn-sm w-full justify-center block text-center"
                 >
                   Register
                 </Link>

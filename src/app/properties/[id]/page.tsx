@@ -178,7 +178,7 @@ export default function PropertyDetailPage() {
               { icon: Bath, label: "Bathrooms", val: property.bathrooms },
               { icon: BanknoteIcon, label: "Rent/mo", val: `৳${property.rentAmount.toLocaleString()}` },
             ].map(({ icon: Icon, label, val }) => (
-              <div key={label} className="glass-card p-4 text-center">
+              <div key={label} className="card p-4 text-center">
                 <Icon size={20} className="text-violet-400 mx-auto mb-1" />
                 <p className="text-slate-100 font-bold text-sm">{val}</p>
                 <p className="text-slate-500 text-xs">{label}</p>
@@ -187,7 +187,7 @@ export default function PropertyDetailPage() {
           </div>
 
           {/* Description */}
-          <div className="glass-card p-5">
+          <div className="card p-5">
             <h2 className="font-semibold text-slate-200 mb-3">Description</h2>
             <p className="text-slate-400 text-sm leading-relaxed">
               {property.description}
@@ -196,7 +196,7 @@ export default function PropertyDetailPage() {
 
           {/* Amenities */}
           {property.amenities.length > 0 && (
-            <div className="glass-card p-5">
+            <div className="card p-5">
               <h2 className="font-semibold text-slate-200 mb-3">Amenities</h2>
               <div className="flex flex-wrap gap-2">
                 {property.amenities.map((a) => (
@@ -212,7 +212,7 @@ export default function PropertyDetailPage() {
           )}
 
           {/* Reviews */}
-          <div className="glass-card p-5">
+          <div className="card p-5">
             <h2 className="font-semibold text-slate-200 mb-3 flex items-center gap-2">
               <Star size={16} className="text-yellow-400" />
               Reviews ({property._count?.reviews ?? 0})
@@ -250,7 +250,7 @@ export default function PropertyDetailPage() {
         {/* ── Sidebar ─────────────────────────────────────────────────────── */}
         <div className="space-y-4">
           {/* Price card */}
-          <div className="glass-card p-5">
+          <div className="card p-5">
             <p className="text-3xl font-black text-violet-400">
               ৳{property.rentAmount.toLocaleString()}
               <span className="text-slate-500 text-base font-normal">/mo</span>
@@ -258,7 +258,7 @@ export default function PropertyDetailPage() {
 
             {user?.role === "TENANT" && property.isAvailable && (
               <button
-                className="btn-gradient w-full justify-center mt-4"
+                className="btn-primary w-full justify-center mt-4"
                 onClick={() => setShowRequestModal(true)}
                 id="request-to-rent-btn"
               >
@@ -269,7 +269,7 @@ export default function PropertyDetailPage() {
             {!user && (
               <Link
                 href={`/auth/login?redirect=/properties/${id}`}
-                className="btn-gradient w-full justify-center mt-4 block text-center"
+                className="btn-primary w-full justify-center mt-4 block text-center"
               >
                 Login to Request
               </Link>
@@ -283,7 +283,7 @@ export default function PropertyDetailPage() {
           </div>
 
           {/* Landlord card */}
-          <div className="glass-card p-5 space-y-3">
+          <div className="card p-5 space-y-3">
             <h3 className="font-semibold text-slate-200 text-sm">Listed by</h3>
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-violet-600/30 flex items-center justify-center text-violet-300 font-bold text-sm">
@@ -315,7 +315,7 @@ export default function PropertyDetailPage() {
       {/* ── Request Modal ────────────────────────────────────────────────────── */}
       {showRequestModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
-          <div className="glass-card p-6 w-full max-w-md">
+          <div className="card-elevated p-6 w-full max-w-md">
             <div className="flex items-center justify-between mb-5">
               <h2 className="font-bold text-slate-100 text-lg">Request to Rent</h2>
               <button
@@ -372,14 +372,14 @@ export default function PropertyDetailPage() {
                 <button
                   type="button"
                   onClick={() => setShowRequestModal(false)}
-                  className="btn-outline flex-1 justify-center"
+                  className="btn-secondary flex-1 justify-center"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting || requestMutation.isPending}
-                  className="btn-gradient flex-1 justify-center"
+                  className="btn-primary flex-1 justify-center"
                   id="submit-request-btn"
                 >
                   {requestMutation.isPending ? "Submitting…" : "Submit Request"}

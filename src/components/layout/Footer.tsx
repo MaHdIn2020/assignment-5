@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Home, Mail, MapPin, Clock, Building2, UserPlus } from "lucide-react";
 
 export function Footer() {
   return (
@@ -8,11 +9,11 @@ export function Footer() {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 font-bold text-xl mb-3">
-              <span>🏠</span>
+              <Home size={22} className="text-violet-400" />
               <span className="gradient-text">RentNest</span>
             </div>
             <p className="text-slate-400 text-sm leading-relaxed">
-              Bangladesh's modern rental marketplace connecting landlords with
+              Bangladesh&apos;s modern rental marketplace connecting landlords with
               quality tenants.
             </p>
           </div>
@@ -24,15 +25,16 @@ export function Footer() {
             </h3>
             <ul className="space-y-2 text-sm">
               {[
-                { href: "/", label: "Home" },
-                { href: "/properties", label: "Browse Properties" },
-                { href: "/auth/register", label: "Create Account" },
-              ].map(({ href, label }) => (
+                { href: "/", label: "Home", icon: Home },
+                { href: "/properties", label: "Browse Properties", icon: Building2 },
+                { href: "/auth/register", label: "Create Account", icon: UserPlus },
+              ].map(({ href, label, icon: Icon }) => (
                 <li key={href}>
                   <Link
                     href={href}
-                    className="text-slate-400 hover:text-violet-400 transition-colors"
+                    className="text-slate-400 hover:text-violet-400 transition-colors inline-flex items-center gap-1.5"
                   >
+                    <Icon size={13} />
                     {label}
                   </Link>
                 </li>
@@ -46,15 +48,15 @@ export function Footer() {
               Contact
             </h3>
             <ul className="space-y-2 text-sm text-slate-400">
-              <li>📧 support@rentnest.com</li>
-              <li>📍 Dhaka, Bangladesh</li>
-              <li>🕐 Sun–Thu, 9AM–6PM</li>
+              <li className="flex items-center gap-1.5"><Mail size={13} /> support@rentnest.com</li>
+              <li className="flex items-center gap-1.5"><MapPin size={13} /> Dhaka, Bangladesh</li>
+              <li className="flex items-center gap-1.5"><Clock size={13} /> Sun–Thu, 9AM–6PM</li>
             </ul>
           </div>
         </div>
 
         <div className="border-t border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-slate-500">
-          <p>© {new Date().getFullYear()} RentNest. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} RentNest. All rights reserved.</p>
           <p>Built for Apollo Level-2 Web Dev — B7A5</p>
         </div>
       </div>

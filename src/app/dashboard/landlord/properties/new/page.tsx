@@ -40,7 +40,7 @@ export default function NewPropertyPage() {
         </p>
       </div>
 
-      <div className="glass-card p-6 sm:p-8">
+      <div className="card p-6 sm:p-8">
         <PropertyForm onSubmit={handleCreate} submitLabel="Publish Property" />
       </div>
     </div>

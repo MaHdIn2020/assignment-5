@@ -31,7 +31,7 @@ export function PropertyCard({ property }: Props) {
 
   return (
     <Link href={`/properties/${id}`} className="group block">
-      <div className="glass-card overflow-hidden transition-all duration-300 hover:border-violet-500/40 hover:-translate-y-1 hover:shadow-2xl hover:shadow-violet-500/10">
+      <div className="card-interactive overflow-hidden">
         {/* Image */}
         <div className="relative h-48 overflow-hidden bg-slate-800">
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -102,7 +102,7 @@ export function PropertyCard({ property }: Props) {
 // Skeleton version for loading states
 export function PropertyCardSkeleton() {
   return (
-    <div className="glass-card overflow-hidden">
+    <div className="card overflow-hidden">
       <div className="skeleton h-48 rounded-none" />
       <div className="p-4 space-y-3">
         <div className="skeleton h-4 w-3/4" />

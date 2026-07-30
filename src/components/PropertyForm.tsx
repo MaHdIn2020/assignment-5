@@ -268,7 +268,7 @@ export function PropertyForm({ defaultValues, onSubmit, submitLabel }: Props) {
           <button
             type="button"
             onClick={addImage}
-            className="btn-outline px-3 py-2 shrink-0"
+            className="btn-secondary btn-sm shrink-0"
           >
             <Plus size={16} />
           </button>
@@ -329,7 +329,7 @@ export function PropertyForm({ defaultValues, onSubmit, submitLabel }: Props) {
           <button
             type="button"
             onClick={addCustomAmenity}
-            className="btn-outline px-3 py-2 shrink-0"
+            className="btn-secondary btn-sm shrink-0"
           >
             <Plus size={16} />
           </button>
@@ -372,7 +372,7 @@ export function PropertyForm({ defaultValues, onSubmit, submitLabel }: Props) {
         id="property-form-submit"
         type="submit"
         disabled={isSubmitting}
-        className="btn-gradient w-full justify-center py-3"
+        className="btn-primary w-full justify-center py-3"
       >
         {isSubmitting ? "Saving…" : submitLabel}
       </button>

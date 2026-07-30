@@ -10,7 +10,7 @@ import { useAuthStore } from "@/store/authStore";
 import Link from "next/link";
 import {
   Home, CreditCard, Star, X, Clock,
-  CheckCircle2, BanknoteIcon,
+  CheckCircle2, BanknoteIcon, FileText,
 } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -105,9 +105,9 @@ export default function TenantDashboard() {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-slate-100">
-          Welcome, <span className="gradient-text">{user?.name}</span> 👋
-        </h1>
+          <h1 className="text-2xl font-bold text-slate-100">
+            Welcome, <span className="gradient-text">{user?.name}</span>
+          </h1>
         <p className="text-slate-400 text-sm mt-1">Manage your rental requests and payments</p>
       </div>
 
@@ -119,7 +119,7 @@ export default function TenantDashboard() {
           { label: "Approved", val: approved, icon: CheckCircle2, color: "text-blue-400" },
           { label: "Total Paid", val: `৳${totalPaid.toLocaleString()}`, icon: BanknoteIcon, color: "text-emerald-400" },
         ].map(({ label, val, icon: Icon, color }) => (
-          <div key={label} className="glass-card p-4 flex items-center gap-3">
+          <div key={label} className="card p-4 flex items-center gap-3">
             <Icon size={22} className={color} />
             <div>
               <p className="text-lg font-bold text-slate-100">{val}</p>
@@ -149,7 +149,7 @@ export default function TenantDashboard() {
 
       {/* ── Requests Tab ─────────────────────────────────────────────────── */}
       {activeTab === "requests" && (
-        <div className="glass-card overflow-hidden">
+        <div className="card overflow-hidden">
           {reqLoading ? (
             <div className="p-6 space-y-3">
               {Array.from({ length: 3 }).map((_, i) => (
@@ -199,15 +199,15 @@ export default function TenantDashboard() {
                           req.payment?.status !== "SUCCEEDED" && (
                             <Link
                               href={`/dashboard/tenant/pay/${req.id}`}
-                              className="btn-gradient text-xs py-1.5 px-3"
-                              id={`pay-btn-${req.id}`}
+              className="btn-primary btn-sm"
+              id={`pay-btn-${req.id}`}
                             >
                               <CreditCard size={12} /> Pay Now
                             </Link>
                           )}
                         {req.payment?.status === "SUCCEEDED" && (
                           <button
-                            className="btn-outline text-xs py-1.5 px-3"
+                            className="btn-secondary btn-sm"
                             onClick={() =>
                               setReviewTarget({
                                 requestId: req.id,
@@ -228,11 +228,11 @@ export default function TenantDashboard() {
             </div>
           ) : (
             <div className="p-12 text-center">
-              <p className="text-3xl mb-3">📋</p>
+              <FileText size={36} className="text-slate-700 mx-auto mb-3" />
               <p className="text-slate-400">No rental requests yet.</p>
               <Link
                 href="/properties"
-                className="btn-gradient mt-4 inline-flex text-sm"
+                className="btn-primary mt-4 inline-flex btn-sm"
               >
                 Browse Properties
               </Link>
@@ -243,7 +243,7 @@ export default function TenantDashboard() {
 
       {/* ── Payments Tab ─────────────────────────────────────────────────── */}
       {activeTab === "payments" && (
-        <div className="glass-card overflow-hidden">
+        <div className="card overflow-hidden">
           {payLoading ? (
             <div className="p-6 space-y-3">
               {Array.from({ length: 3 }).map((_, i) => (
@@ -286,7 +286,7 @@ export default function TenantDashboard() {
             </div>
           ) : (
             <div className="p-12 text-center">
-              <p className="text-3xl mb-3">💳</p>
+              <CreditCard size={36} className="text-slate-700 mx-auto mb-3" />
               <p className="text-slate-400">No payments yet.</p>
             </div>
           )}
@@ -296,7 +296,7 @@ export default function TenantDashboard() {
       {/* ── Review Modal ─────────────────────────────────────────────────── */}
       {reviewTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
-          <div className="glass-card p-6 w-full max-w-md">
+          <div className="card-elevated p-6 w-full max-w-md">
             <div className="flex items-center justify-between mb-5">
               <h2 className="font-bold text-slate-100">Leave a Review</h2>
               <button
@@ -358,7 +358,7 @@ export default function TenantDashboard() {
               <button
                 type="submit"
                 disabled={reviewMutation.isPending}
-                className="btn-gradient w-full justify-center"
+                className="btn-primary w-full justify-center"
                 id="submit-review-btn"
               >
                 {reviewMutation.isPending ? "Submitting…" : "Submit Review"}
