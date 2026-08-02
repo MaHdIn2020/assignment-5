@@ -24,9 +24,10 @@ Password: Admin@12345
 | Role | Email | Password |
 |---|---|---|
 | Admin | admin@rentnest.com | Admin@12345 |
-| Landlord | landlord@rentnest.com | Test@1234 |
-| Landlord 2 | landlord2@rentnest.com | Test@1234 |
-| Tenant | tenant@rentnest.com | Test@1234 |
+
+> 💡 Only the **Admin** account is pre-seeded on the live backend. Landlord and
+> Tenant accounts can be created via the **Register** page (`/auth/register`) in
+> about 30 seconds — just pick the role you want to test.
 
 ---
 

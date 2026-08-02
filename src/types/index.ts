@@ -53,7 +53,9 @@ export interface RentalRequest {
   property?: Pick<
     Property,
     "id" | "title" | "city" | "rentAmount" | "images"
-  >;
+  > & {
+    landlord?: Pick<User, "id" | "name" | "email">;
+  };
   payment?: Payment;
 }
 

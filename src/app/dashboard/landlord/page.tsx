@@ -3,16 +3,23 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/axios";
-import type { ApiResponse, Property } from "@/types";
+import type { ApiResponse, Property, RentalRequest } from "@/types";
 import { useAuthStore } from "@/store/authStore";
 import Link from "next/link";
-import { Plus, Pencil, Building2, Users, BanknoteIcon, Eye } from "lucide-react";
+import { Plus, Pencil, Building2, Users, Eye } from "lucide-react";
 import toast from "react-hot-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 async function fetchMyListings(): Promise<Property[]> {
   const { data } = await api.get<ApiResponse<Property[]>>(
     "/api/properties/my-listings"
+  );
+  return data.data;
+}
+
+async function fetchIncomingRequests(): Promise<RentalRequest[]> {
+  const { data } = await api.get<ApiResponse<RentalRequest[]>>(
+    "/api/rental-requests/incoming"
   );
   return data.data;
 }
@@ -26,6 +33,11 @@ export default function LandlordDashboard() {
     queryFn: fetchMyListings,
   });
 
+  const { data: incoming } = useQuery({
+    queryKey: ["incomingRequests"],
+    queryFn: fetchIncomingRequests,
+  });
+
   const deleteMutation = useMutation({
     mutationFn: (id: string) => api.delete(`/api/properties/${id}`),
     onSuccess: () => {
@@ -37,6 +49,8 @@ export default function LandlordDashboard() {
 
   const totalListings = listings?.length ?? 0;
   const availableListings = listings?.filter((p) => p.isAvailable).length ?? 0;
+  const pendingRequests =
+    incoming?.filter((r) => r.status === "PENDING").length ?? 0;
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
@@ -65,7 +79,7 @@ export default function LandlordDashboard() {
         {[
           { label: "Total Listings", val: totalListings, icon: Building2, color: "text-violet-400" },
           { label: "Available", val: availableListings, icon: Eye, color: "text-emerald-400" },
-          { label: "Requests", val: "—", icon: Users, color: "text-blue-400" },
+          { label: "Pending Requests", val: pendingRequests, icon: Users, color: "text-blue-400" },
         ].map(({ label, val, icon: Icon, color }) => (
           <div key={label} className="card p-4 flex items-center gap-3">
             <Icon size={22} className={color} />

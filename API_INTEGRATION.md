@@ -97,6 +97,8 @@ All frontend components and pages map to the following backend endpoints.
 | `src/app/dashboard/admin/page.tsx` | `GET` | `/api/admin/stats` | ADMIN JWT |
 | `src/app/dashboard/admin/page.tsx` | `GET` | `/api/users` | ADMIN JWT |
 | `src/app/dashboard/admin/page.tsx` (ban/unban) | `PATCH` | `/api/users/:id/status` | ADMIN JWT |
+| `src/app/dashboard/admin/page.tsx` (All Listings tab) | `GET` | `/api/properties?page&limit` | ADMIN JWT |
+| `src/app/dashboard/admin/page.tsx` (Rental Requests tab) | `GET` | `/api/rental-requests?page&limit` | ADMIN JWT |
 
 **Ban/unban body:**
 ```json
