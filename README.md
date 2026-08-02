@@ -6,7 +6,7 @@ Apollo Level-2 Web Dev | Assignment 5 | Frontend-only repository.
 
 | Resource | URL |
 |---|---|
-| **Frontend (Vercel)** | https://assignment5-5cqhj3czz-tanjipsuraitmahdin-gmailcoms-projects.vercel.app |
+| **Frontend (Vercel)** | https://assignment5-ashy.vercel.app |
 | **Backend API** | https://rentnest-api-cefz.onrender.com |
 | **API Docs** | https://rentnest-api-cefz.onrender.com/api-docs |
 
