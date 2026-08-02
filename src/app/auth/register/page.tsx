@@ -182,11 +182,20 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="btn-primary w-full justify-center py-3 mt-2"
+              className="btn-primary btn-lg w-full justify-center mt-2"
               id="register-submit-btn"
             >
-              <UserPlus size={17} />
-              {isSubmitting ? "Creating account…" : "Create Account"}
+              {isSubmitting ? (
+                <>
+                  <span className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                  Creating account…
+                </>
+              ) : (
+                <>
+                  <UserPlus size={17} />
+                  Create Account
+                </>
+              )}
             </button>
           </form>
 

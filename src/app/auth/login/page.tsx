@@ -121,10 +121,19 @@ function LoginForm() {
               id="login-submit-btn"
               type="submit"
               disabled={isSubmitting}
-              className="btn-primary w-full justify-center py-3"
+              className="btn-primary btn-lg w-full justify-center mt-1"
             >
-              <LogIn size={17} />
-              {isSubmitting ? "Signing in…" : "Sign In"}
+              {isSubmitting ? (
+                <>
+                  <span className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                  Signing in…
+                </>
+              ) : (
+                <>
+                  <LogIn size={17} />
+                  Sign In
+                </>
+              )}
             </button>
           </form>
 
@@ -132,8 +141,8 @@ function LoginForm() {
           <div className="mt-4 p-3 rounded-lg bg-slate-800/50 border border-slate-700/50 text-xs text-slate-500">
             <p className="font-medium text-slate-400 mb-1">Demo credentials:</p>
             <p>Admin: admin@rentnest.com / Admin@12345</p>
-            <p>Landlord: landlord@rentnest.com / Test@1234</p>
-            <p>Tenant: tenant@rentnest.com / Test@1234</p>
+            <p>Landlord: landlord@rentnest.com / Landlord@12345</p>
+            <p>Tenant: tenant@rentnest.com / Tenant@12345</p>
           </div>
 
           <p className="text-center text-sm text-slate-500 mt-5">
