@@ -8,18 +8,11 @@ Apollo Level-2 Web Dev | Assignment 5 | Frontend-only repository.
 |---|---|
 | **Frontend (Vercel)** | https://assignment5-ashy.vercel.app |
 | **Backend API** | https://rentnest-api-cefz.onrender.com |
-| **API Docs** | https://rentnest-api-cefz.onrender.com/api-docs |
+| **API Docs (Swagger)** | https://rentnest-api-cefz.onrender.com/api-docs |
 
 ---
 
-## 🔑 Admin Credentials (for grading)
-
-```
-Email:    admin@rentnest.com
-Password: Admin@12345
-```
-
-## 🧑‍💼 Demo Credentials
+## 🔑 Demo Credentials
 
 | Role | Email | Password |
 |---|---|---|
@@ -28,19 +21,41 @@ Password: Admin@12345
 | Landlord 2 | landlord2@rentnest.com | Landlord@12345 |
 | Tenant | tenant@rentnest.com | Tenant@12345 |
 
-> 💡 All three roles are pre-seeded and verified against the live backend.
+> 💡 All roles are pre-seeded and verified against the live backend. The login
+> page also has **one-click demo login** buttons and **mock Google/Facebook**
+> sign-in (creates a tenant account when the email is new).
+
+---
+
+## ✨ Features
+
+- **Browse & filter** properties by keyword search, city, type, rent range,
+  bedrooms and availability, with sorting and pagination
+- **Property detail** with image gallery, rating summary, key info, reviews,
+  landlord contact and related properties
+- **Tenant flow** — request to rent, Stripe test payment, review & rating
+- **Landlord flow** — create/edit/delete listings, approve or reject requests
+- **Admin panel** — stats overview, user management (ban/unban), content
+  moderation, blog CMS, contact-message inbox, and a Recharts analytics page
+- **Blog** — public listing with tag filter, article pages with markdown content
+- **Contact & newsletter** — working contact form and newsletter subscription
+- **Auth** — register/login, role-based dashboards, profile editing, change
+  password, mock social login
+- **Theme system** — dark (default) / light toggle persisted in localStorage
 
 ---
 
 ## 🛠 Tech Stack
 
 - **Framework:** Next.js 16 (App Router) + TypeScript
-- **Styling:** Tailwind CSS v4 (custom components, no Shadcn)
+- **Styling:** Tailwind CSS v4 (semantic CSS tokens, custom components, no Shadcn)
 - **Forms:** React Hook Form + Zod
 - **Server State:** TanStack Query v5
 - **Global State:** Zustand
-- **Auth:** JWT via cookie + Next.js Middleware (role-gated routes)
-- **Payments:** Stripe.js Elements (real card flow)
+- **Charts:** Recharts
+- **Markdown:** react-markdown (blog content)
+- **Auth:** JWT via Zustand + `localStorage` + cookie (client-side route guards)
+- **Payments:** Stripe.js Elements (test mode)
 - **Deploy:** Vercel
 
 ---
@@ -77,46 +92,48 @@ Open [http://localhost:3000](http://localhost:3000).
 ```
 src/
 ├── app/
-│   ├── page.tsx                          # Home (featured properties)
+│   ├── page.tsx                          # Home (11 sections incl. blog + newsletter)
 │   ├── properties/
-│   │   ├── page.tsx                      # Browse + filter
-│   │   └── [id]/page.tsx                 # Property detail + request modal
+│   │   ├── page.tsx                      # Browse + search + sort + filters
+│   │   └── [id]/page.tsx                 # Detail + request modal + related
+│   ├── blog/
+│   │   ├── page.tsx                      # Public blog listing (tag filter)
+│   │   └── [slug]/page.tsx               # Article (markdown)
+│   ├── about/  contact/  help/  privacy/  terms/    # Static/public pages
 │   ├── auth/
 │   │   ├── register/page.tsx             # Role-select + register form
-│   │   └── login/page.tsx               # Login + role-based redirect
+│   │   └── login/page.tsx                # Login + demo + social login
 │   ├── dashboard/
+│   │   ├── layout.tsx                    # Role-aware sidebar + auth guard
+│   │   ├── profile/page.tsx              # Edit profile + change password
+│   │   ├── settings/page.tsx             # Theme + notification prefs
 │   │   ├── tenant/
-│   │   │   ├── page.tsx                  # Requests + payments history
+│   │   │   ├── page.tsx                  # Requests + payments + review
 │   │   │   └── pay/[requestId]/page.tsx  # Stripe payment page
 │   │   ├── landlord/
 │   │   │   ├── page.tsx                  # Stats + listings table
-│   │   │   ├── properties/
-│   │   │   │   ├── new/page.tsx          # Create property
-│   │   │   │   └── [id]/edit/page.tsx    # Edit property
+│   │   │   ├── properties/new + [id]/edit
 │   │   │   └── requests/page.tsx         # Approve/reject requests
 │   │   └── admin/
-│   │       └── page.tsx                  # Stats + user management
-│   ├── payment/
-│   │   ├── success/page.tsx
-│   │   └── cancel/page.tsx
-│   ├── error.tsx
-│   ├── not-found.tsx
-│   └── loading.tsx
+│   │       ├── page.tsx                  # Stats + content moderation
+│   │       ├── analytics/page.tsx        # Recharts charts
+│   │       ├── users/page.tsx            # User management (ban/unban)
+│   │       ├── blog/page.tsx             # Blog CMS
+│   │       └── messages/page.tsx         # Contact inbox
+│   ├── payment/success + cancel
+│   ├── error.tsx / not-found.tsx / loading.tsx
 ├── components/
-│   ├── layout/Navbar.tsx
-│   ├── layout/Footer.tsx
-│   ├── Providers.tsx
-│   ├── PropertyCard.tsx
-│   ├── PropertyForm.tsx
-│   ├── StatusBadge.tsx
-│   └── ErrorBoundary.tsx
+│   ├── layout/Navbar.tsx + Footer.tsx
+│   ├── DataTable.tsx                     # Reusable table + pagination
+│   ├── SocialIcons.tsx                   # Inline SVG brand icons
+│   ├── ThemeToggle.tsx
+│   ├── PropertyCard.tsx / PropertyForm.tsx / StatusBadge.tsx
+│   └── Providers.tsx / ErrorBoundary.tsx
 ├── lib/
-│   └── axios.ts                          # Axios instance + JWT interceptors
-├── store/
-│   └── authStore.ts                      # Zustand auth store
-├── types/
-│   └── index.ts                          # Shared TypeScript types
-└── middleware.ts                          # Edge route protection
+│   ├── axios.ts                          # Axios instance + JWT interceptors
+│   └── theme.ts                          # Theme hook (dark/light)
+├── store/authStore.ts                    # Zustand auth store
+├── types/index.ts                        # Shared TypeScript types
 ```
 
 ---
@@ -136,13 +153,14 @@ src/
 
 ## 🔐 Route Protection
 
-Next.js Middleware (`src/middleware.ts`) runs on every `/dashboard/*` request:
-- Reads `accessToken` cookie
-- Base64-decodes the JWT payload (Edge runtime has no Node.js crypto)
-- Checks `role` field and redirects if wrong role or unauthenticated
+`src/app/dashboard/layout.tsx` guards every `/dashboard/*` route client-side:
+- Reads the auth store (hydrated from `localStorage` on mount)
+- Redirects unauthenticated users to `/auth/login?redirect=<route>`
+- Renders a role-aware sidebar (Admin / Landlord / Tenant menus)
 
 ---
 
 ## 📖 API Integration
 
-See [API_INTEGRATION.md](./API_INTEGRATION.md) for the complete mapping of every frontend component to its backend endpoint.
+See [API_INTEGRATION.md](./API_INTEGRATION.md) for the complete mapping of every
+frontend component to its backend endpoint.

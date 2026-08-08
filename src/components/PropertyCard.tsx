@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import type { Property } from "@/types";
-import { MapPin, Bed, Bath, BanknoteIcon } from "lucide-react";
+import { MapPin, Bed, Bath, BanknoteIcon, Star } from "lucide-react";
 
 interface Props {
   property: Property;
@@ -13,6 +13,7 @@ export function PropertyCard({ property }: Props) {
   const {
     id,
     title,
+    description,
     city,
     location,
     rentAmount,
@@ -21,6 +22,8 @@ export function PropertyCard({ property }: Props) {
     images,
     category,
     isAvailable,
+    averageRating,
+    reviewCount,
   } = property;
 
   // Fallback image when the property has no images uploaded
@@ -31,9 +34,9 @@ export function PropertyCard({ property }: Props) {
 
   return (
     <Link href={`/properties/${id}`} className="group block">
-      <div className="card-interactive overflow-hidden">
+      <div className="card-interactive overflow-hidden flex flex-col h-full">
         {/* Image */}
-        <div className="relative h-48 overflow-hidden bg-slate-800">
+        <div className="relative h-48 overflow-hidden bg-surface-raised">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={imgSrc}
@@ -46,8 +49,8 @@ export function PropertyCard({ property }: Props) {
           />
           {/* Availability overlay */}
           {!isAvailable && (
-            <div className="absolute inset-0 bg-slate-900/70 flex items-center justify-center">
-              <span className="text-slate-300 font-semibold text-sm bg-slate-800/90 px-3 py-1 rounded-full">
+            <div className="absolute inset-0 bg-surface-raised/70 flex items-center justify-center">
+              <span className="text-text-primary font-semibold text-sm bg-surface-raised/90 px-3 py-1 rounded-full">
                 Not Available
               </span>
             </div>
@@ -58,22 +61,38 @@ export function PropertyCard({ property }: Props) {
               {category.name}
             </span>
           )}
+          {/* Rating badge */}
+          {(reviewCount ?? 0) > 0 && (
+            <span className="absolute top-3 right-3 flex items-center gap-1 text-xs font-semibold bg-surface-raised/90 text-text-primary px-2 py-1 rounded-full">
+              <Star size={12} className="text-yellow-400" fill="currentColor" />
+              {averageRating}
+              <span className="text-text-muted font-normal">
+                ({reviewCount})
+              </span>
+            </span>
+          )}
         </div>
 
         {/* Content */}
-        <div className="p-4 space-y-3">
+        <div className="p-4 space-y-3 flex flex-col flex-1">
           <div>
-            <h3 className="font-semibold text-slate-100 text-sm leading-snug line-clamp-2 group-hover:text-violet-300 transition-colors">
+            <h3 className="font-semibold text-text-primary text-sm leading-snug line-clamp-2 group-hover:text-accent-primary transition-colors">
               {title}
             </h3>
-            <p className="flex items-center gap-1 text-xs text-slate-400 mt-1">
+            <p className="flex items-center gap-1 text-xs text-text-secondary mt-1">
               <MapPin size={11} />
               {location}, {city}
             </p>
           </div>
 
+          {description && (
+            <p className="text-xs text-text-secondary leading-relaxed line-clamp-2">
+              {description}
+            </p>
+          )}
+
           {/* Stats row */}
-          <div className="flex items-center gap-4 text-xs text-slate-400">
+          <div className="flex items-center gap-4 text-xs text-text-secondary">
             <span className="flex items-center gap-1">
               <Bed size={12} /> {bedrooms} Bed
             </span>
@@ -82,15 +101,15 @@ export function PropertyCard({ property }: Props) {
             </span>
           </div>
 
-          {/* Price */}
-          <div className="flex items-center justify-between pt-1 border-t border-slate-700/60">
-            <div className="flex items-center gap-1 text-violet-400 font-bold">
+          {/* Price + action */}
+          <div className="flex items-center justify-between pt-3 mt-auto border-t border-card-border">
+            <div className="flex items-center gap-1 text-accent-primary font-bold">
               <BanknoteIcon size={14} />
               ৳ {rentAmount.toLocaleString()}
-              <span className="text-slate-500 font-normal text-xs">/mo</span>
+              <span className="text-text-muted font-normal text-xs">/mo</span>
             </div>
-            <span className="text-xs text-violet-400 font-medium group-hover:underline">
-              View →
+            <span className="btn-primary btn-sm pointer-events-none">
+              View Details
             </span>
           </div>
         </div>

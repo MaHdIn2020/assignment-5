@@ -1,7 +1,9 @@
 # API Integration Map — RentNest Frontend (B7A5)
 
 All frontend components and pages map to the following backend endpoints.
-**Base URL:** `https://rentnest-api-cefz.onrender.com`
+**Base URL:** `https://rentnest-api-cefz.onrender.com` (local dev: `http://localhost:5000`)
+
+Every response uses the envelope: `{ "success": true, "message": "...", "data": ..., "meta"? }`.
 
 ---
 
@@ -11,14 +13,19 @@ All frontend components and pages map to the following backend endpoints.
 |---|---|---|---|
 | `src/app/auth/register/page.tsx` | `POST` | `/api/auth/register` | No |
 | `src/app/auth/login/page.tsx` | `POST` | `/api/auth/login` | No |
+| `src/app/auth/login/page.tsx` (Google/Facebook) | `POST` | `/api/auth/social` | No |
 | `src/lib/axios.ts` (interceptor) | `POST` | `/api/auth/refresh-token` | No (uses refreshToken) |
-| `src/components/layout/Navbar.tsx` | — | (reads Zustand store, no API call on render) | — |
+| `src/app/dashboard/profile/page.tsx` | `POST` | `/api/auth/change-password` | Any JWT |
 
-**Request body for register:**
+**Register body:**
 ```json
 { "name": "string", "email": "string", "password": "string", "role": "TENANT|LANDLORD", "phone": "string?" }
 ```
-**Response for login:**
+**Social login body (mock — creates a TENANT if the email is unknown):**
+```json
+{ "provider": "google|facebook", "email": "string?", "name": "string?", "credential": "string?" }
+```
+**Login response:**
 ```json
 { "success": true, "data": { "user": {...}, "accessToken": "jwt", "refreshToken": "jwt" } }
 ```
@@ -30,14 +37,69 @@ All frontend components and pages map to the following backend endpoints.
 | Page | Method | Endpoint | Query Params |
 |---|---|---|---|
 | `src/app/page.tsx` (home) | `GET` | `/api/properties` | `limit=6` |
-| `src/app/properties/page.tsx` | `GET` | `/api/properties` | `page, limit, city, categoryId, minRent, maxRent, bedrooms` |
+| `src/app/properties/page.tsx` | `GET` | `/api/properties` | `page, limit, search, city, categoryId, minRent, maxRent, bedrooms, isAvailable, sortBy, sortOrder` |
 | `src/app/properties/[id]/page.tsx` | `GET` | `/api/properties/:id` | — |
+| `src/app/properties/[id]/page.tsx` (related) | `GET` | `/api/properties` | `categoryId, limit=3` |
 | `src/app/properties/page.tsx` (filter dropdown) | `GET` | `/api/categories` | — |
 
-**Property list response shape:**
+**Property list now includes** `averageRating` (0–5) and `reviewCount` on every item.
+
+---
+
+## Public Stats & Home
+
+| Page / Component | Method | Endpoint |
+|---|---|---|
+| `src/app/page.tsx` (counters) | `GET` | `/api/stats` |
+| `src/app/page.tsx` (testimonials) | `GET` | `/api/stats` (uses `topReviews`) |
+| `src/app/about/page.tsx` | `GET` | `/api/stats` |
+| `src/app/page.tsx` (latest articles) | `GET` | `/api/blog/latest?limit=3` |
+
+**`/api/stats` response data:**
 ```json
-{ "success": true, "data": [...properties], "meta": { "page": 1, "limit": 10, "total": 8 } }
+{
+  "totalUsers", "totalProperties", "availableProperties", "totalCities",
+  "totalReviews", "totalBlogPosts", "averageRating",
+  "categories": [{ "id", "name", "description", "_count": { "properties" } }],
+  "topReviews": [{ "id", "rating", "comment", "tenant", "property" }]
+}
 ```
+
+---
+
+## Blog
+
+| Page / Component | Method | Endpoint | Auth |
+|---|---|---|---|
+| `src/app/blog/page.tsx` | `GET` | `/api/blog` | No (`page, limit, tag`) |
+| `src/app/blog/[slug]/page.tsx` | `GET` | `/api/blog/:slug` | No (published only) |
+| `src/app/page.tsx` (home preview) | `GET` | `/api/blog/latest?limit=3` | No |
+| `src/app/dashboard/admin/blog/page.tsx` | `GET` | `/api/blog/admin/all` | ADMIN JWT |
+| `src/app/dashboard/admin/blog/page.tsx` (create) | `POST` | `/api/blog` | ADMIN JWT |
+| `src/app/dashboard/admin/blog/page.tsx` (edit / publish toggle) | `PATCH` | `/api/blog/:id` | ADMIN JWT |
+| `src/app/dashboard/admin/blog/page.tsx` (delete) | `DELETE` | `/api/blog/:id` | ADMIN JWT |
+
+**Create/update body:**
+```json
+{ "title": "string", "excerpt": "string", "content": "string", "coverImage": "string?", "tags": ["string"], "isPublished": true }
+```
+`slug` is auto-generated from the title when omitted.
+
+---
+
+## Contact & Newsletter
+
+| Page / Component | Method | Endpoint | Auth |
+|---|---|---|---|
+| `src/app/contact/page.tsx` | `POST` | `/api/contact` | No |
+| `src/app/page.tsx` (newsletter form) | `POST` | `/api/newsletter/subscribe` | No |
+| `src/app/dashboard/admin/messages/page.tsx` | `GET` | `/api/contact?page&limit&status` | ADMIN JWT |
+| `src/app/dashboard/admin/messages/page.tsx` | `PATCH` | `/api/contact/:id/status` | ADMIN JWT |
+| (admin) newsletter list | `GET` | `/api/newsletter` | ADMIN JWT |
+
+**Contact body:** `{ "name", "email", "subject", "message" }`
+**Status body:** `{ "status": "NEW" | "REPLIED" }`
+**Newsletter body:** `{ "email": "string" }` — returns 409 if already actively subscribed.
 
 ---
 
@@ -56,18 +118,9 @@ All frontend components and pages map to the following backend endpoints.
 ```json
 { "propertyId": "uuid", "moveInDate": "2026-08-01", "message": "string?" }
 ```
-**Payment create-intent body:**
-```json
-{ "rentalRequestId": "uuid" }
-```
-**Payment confirm body:**
-```json
-{ "rentalRequestId": "uuid", "paymentIntentId": "pi_stripe_id" }
-```
-**Review body:**
-```json
-{ "propertyId": "uuid", "rating": 1-5, "comment": "string?" }
-```
+**Payment create-intent body:** `{ "rentalRequestId": "uuid" }`
+**Payment confirm body:** `{ "rentalRequestId": "uuid", "paymentIntentId": "pi_stripe_id" }`
+**Review body:** `{ "propertyId": "uuid", "rating": 1-5, "comment": "string?" }`
 
 ---
 
@@ -83,10 +136,7 @@ All frontend components and pages map to the following backend endpoints.
 | `src/app/dashboard/landlord/requests/page.tsx` | `GET` | `/api/rental-requests/incoming` | LANDLORD JWT |
 | `src/app/dashboard/landlord/requests/page.tsx` | `PATCH` | `/api/rental-requests/:id/status` | LANDLORD JWT |
 
-**Status update body:**
-```json
-{ "status": "APPROVED" | "REJECTED" }
-```
+**Status update body:** `{ "status": "APPROVED" | "REJECTED" }`
 
 ---
 
@@ -95,25 +145,49 @@ All frontend components and pages map to the following backend endpoints.
 | Page | Method | Endpoint | Auth |
 |---|---|---|---|
 | `src/app/dashboard/admin/page.tsx` | `GET` | `/api/admin/stats` | ADMIN JWT |
-| `src/app/dashboard/admin/page.tsx` | `GET` | `/api/users` | ADMIN JWT |
-| `src/app/dashboard/admin/page.tsx` (ban/unban) | `PATCH` | `/api/users/:id/status` | ADMIN JWT |
+| `src/app/dashboard/admin/analytics/page.tsx` | `GET` | `/api/admin/analytics` | ADMIN JWT |
+| `src/app/dashboard/admin/users/page.tsx` | `GET` | `/api/users?name&page&limit` | ADMIN JWT |
+| `src/app/dashboard/admin/users/page.tsx` (ban/unban) | `PATCH` | `/api/users/:id/status` | ADMIN JWT |
 | `src/app/dashboard/admin/page.tsx` (All Listings tab) | `GET` | `/api/properties?page&limit` | ADMIN JWT |
 | `src/app/dashboard/admin/page.tsx` (Rental Requests tab) | `GET` | `/api/rental-requests?page&limit` | ADMIN JWT |
+| `src/app/dashboard/admin/blog/page.tsx` | (see Blog table above) | | ADMIN JWT |
+| `src/app/dashboard/admin/messages/page.tsx` | (see Contact table above) | | ADMIN JWT |
 
-**Ban/unban body:**
+**`/api/admin/stats` data shape:** `{ "overview": { totalUsers, activeUsers, totalProperties, availableProperties, totalRentalRequests, pendingRequests, totalPayments, successfulPayments, totalReviews, totalRevenue }, "usersByRole": [...] }`
+
+**`/api/admin/analytics` data shape:**
 ```json
-{ "isActive": false }   // ban
-{ "isActive": true }    // unban
+{
+  "revenueByMonth": [{ "month": "2026-08", "revenue": 0 }],
+  "requestsByStatus": [{ "status", "count" }],
+  "propertiesByCity": [{ "city", "count" }],
+  "propertiesByCategory": [{ "name", "count" }],
+  "usersByRole": [{ "role", "count" }],
+  "avgRentByCity": [{ "city", "avgRent" }],
+  "recentUsers": [...], "recentProperties": [...]
+}
 ```
+
+---
+
+## Profile & Settings
+
+| Page | Method | Endpoint | Auth |
+|---|---|---|---|
+| `src/app/dashboard/profile/page.tsx` | `PATCH` | `/api/users/:id` | Own JWT (or ADMIN) |
+| `src/app/dashboard/profile/page.tsx` | `POST` | `/api/auth/change-password` | Any JWT |
+| `src/app/dashboard/settings/page.tsx` | — | theme + notifications stored in `localStorage` only | — |
+
+**Profile update body:** `{ "name"?, "phone"?, "profilePhoto"? }`
 
 ---
 
 ## Auth Token Flow
 
 1. **Login** → JWT stored in Zustand store, `localStorage`, and a cookie.
-2. **Every API request** → `src/lib/axios.ts` request interceptor reads `localStorage.accessToken` and adds `Authorization: Bearer <token>` header.
+2. **Every API request** → `src/lib/axios.ts` request interceptor reads `localStorage.accessToken` and adds `Authorization: Bearer <token>`.
 3. **401 response** → interceptor silently calls `POST /api/auth/refresh-token` with `refreshToken`, updates token, retries original request.
-4. **Middleware** (`src/middleware.ts`) reads the cookie and decodes the JWT role to gate `/dashboard/*` routes before any page renders.
+4. **Route gating** → `src/app/dashboard/layout.tsx` guards `/dashboard/*` client-side (redirects to login with a `redirect` param when unauthenticated).
 
 ---
 
@@ -128,3 +202,4 @@ All frontend components and pages map to the following backend endpoints.
 | `POST /api/payments/create` | `POST /api/payments/create-intent` |
 | `GET /api/admin/users` | `GET /api/users` |
 | `PATCH /api/admin/users/:id` | `PATCH /api/users/:id/status` |
+| — (new) | `POST /api/auth/social`, `GET /api/stats`, `GET|POST|PATCH|DELETE /api/blog*`, `POST /api/contact`, `PATCH /api/contact/:id/status`, `POST /api/newsletter/subscribe`, `GET /api/admin/analytics` |

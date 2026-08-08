@@ -27,8 +27,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={inter.variable}>
-      <body className="min-h-screen bg-slate-950 text-slate-100 antialiased flex flex-col">
+    <html lang="en" className={inter.variable} suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem("rentnest-theme");if(t!=="dark"&&t!=="light"){t=window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";}document.documentElement.dataset.theme=t;}catch(e){document.documentElement.dataset.theme="dark";}})();`,
+          }}
+        />
+      </head>
+      <body className="min-h-screen bg-surface text-text-primary antialiased flex flex-col transition-colors duration-200">
         <Providers>
           <Navbar />
           <main className="flex-1">{children}</main>

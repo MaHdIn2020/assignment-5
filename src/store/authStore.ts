@@ -20,6 +20,8 @@ interface AuthState {
   user: User | null;
   accessToken: string | null;
   refreshToken: string | null;
+  // True once init() has run (client mounted) — distinguishes "loading" from "logged out"
+  hydrated: boolean;
   // Hydrate store from localStorage on first client render
   init: () => void;
   // Called after a successful login
@@ -32,6 +34,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   accessToken: null,
   refreshToken: null,
+  hydrated: false,
 
   init: () => {
     if (typeof window === "undefined") return;
@@ -39,7 +42,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     const refresh = localStorage.getItem("refreshToken");
     const raw = localStorage.getItem("user");
     const user: User | null = raw ? JSON.parse(raw) : null;
-    set({ user, accessToken: token, refreshToken: refresh });
+    set({ user, accessToken: token, refreshToken: refresh, hydrated: true });
   },
 
   setAuth: (user, accessToken, refreshToken) => {
@@ -61,6 +64,6 @@ export const useAuthStore = create<AuthState>((set) => ({
     localStorage.removeItem("user");
     // Expire the cookie immediately
     document.cookie = "accessToken=; max-age=0; path=/";
-    set({ user: null, accessToken: null, refreshToken: null });
+    set({ user: null, accessToken: null, refreshToken: null, hydrated: true });
   },
 }));

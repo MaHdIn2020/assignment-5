@@ -1,21 +1,93 @@
 @import "tailwindcss";
 
+/* ── Theme tokens ───────────────────────────────────────────────────────
+   Default is DARK. Setting data-theme="light" on <html> switches the
+   semantic variables, and the remapped slate/violet palettes below make
+   every existing utility class (bg-slate-950, text-slate-100, ...) adapt
+   automatically so both modes keep proper contrast.
+*/
+:root {
+  --surface: #020617;
+  --surface-raised: #0f172a;
+  --card: rgba(30, 41, 59, 0.6);
+  --card-elevated: rgba(30, 41, 59, 0.8);
+  --card-border: rgba(100, 116, 139, 0.25);
+  --card-border-hover: rgba(139, 92, 246, 0.4);
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-inverse: #020617;
+  --input-bg: rgba(15, 23, 42, 0.8);
+  --input-border: #334155;
+  --accent: #8b5cf6;
+  --accent-2: #ec4899;
+  --hover-bg: rgba(148, 163, 184, 0.12);
+  --shadow: rgba(2, 6, 23, 0.4);
+  --scroll-track: #0f172a;
+  --scroll-thumb: #475569;
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  --surface: #f1f5f9;
+  --surface-raised: #ffffff;
+  --card: #ffffff;
+  --card-elevated: #ffffff;
+  --card-border: rgba(100, 116, 139, 0.4);
+  --card-border-hover: rgba(124, 58, 237, 0.55);
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --text-inverse: #f1f5f9;
+  --input-bg: #ffffff;
+  --input-border: #cbd5e1;
+  --accent: #6d28d9;
+  --accent-2: #db2777;
+  --hover-bg: rgba(100, 116, 139, 0.12);
+  --shadow: rgba(15, 23, 42, 0.08);
+  --scroll-track: #e2e8f0;
+  --scroll-thumb: #94a3b8;
+  color-scheme: light;
+}
+
+/* Remap the default Tailwind palettes for light mode so existing classes adapt */
+[data-theme="light"] {
+  --color-slate-950: #f1f5f9;
+  --color-slate-900: #e2e8f0;
+  --color-slate-800: #ffffff;
+  --color-slate-700: #cbd5e1;
+  --color-slate-600: #94a3b8;
+  --color-slate-500: #64748b;
+  --color-slate-400: #475569;
+  --color-slate-300: #334155;
+  --color-slate-200: #1e293b;
+  --color-slate-100: #0f172a;
+  --color-slate-50: #020617;
+
+  --color-violet-400: #6d28d9;
+  --color-violet-300: #6d28d9;
+  --color-violet-500: #7c3aed;
+  --color-violet-200: #5b21b6;
+
+  --color-white: #0f172a;
+}
+
 @theme {
-  --color-surface-800: #0f172a;
-  --color-surface-900: #020617;
-
-  --color-card-default: rgba(30, 41, 59, 0.6);
-  --color-card-elevated: rgba(30, 41, 59, 0.8);
-  --color-card-border: rgba(100, 116, 139, 0.25);
-  --color-card-border-hover: rgba(139, 92, 246, 0.4);
-
-  --color-accent-primary: #8b5cf6;
-  --color-accent-primary-dark: #7c3aed;
-  --color-accent-secondary: #ec4899;
-
-  --color-text-primary: #f1f5f9;
-  --color-text-secondary: #94a3b8;
-  --color-text-muted: #64748b;
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-card-default: var(--card);
+  --color-card-elevated: var(--card-elevated);
+  --color-card-border: var(--card-border);
+  --color-card-border-hover: var(--card-border-hover);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-text-inverse: var(--text-inverse);
+  --color-accent-primary: var(--accent);
+  --color-accent-secondary: var(--accent-2);
+  --color-input-bg: var(--input-bg);
+  --color-input-border: var(--input-border);
+  --color-hover-bg: var(--hover-bg);
 
   --color-status-pending: #eab308;
   --color-status-approved: #3b82f6;
@@ -33,12 +105,14 @@
   }
 
   body {
+    background-color: var(--surface);
+    color: var(--text-primary);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
   *:focus-visible {
-    outline: 2px solid #8b5cf6;
+    outline: 2px solid var(--accent);
     outline-offset: 2px;
     border-radius: 4px;
   }
@@ -47,31 +121,31 @@
 @layer components {
   /* ── Card hierarchy ───────────────────────────────────────────── */
   .card {
-    background: var(--color-card-default);
+    background: var(--card);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--color-card-border);
+    border: 1px solid var(--card-border);
     border-radius: 1rem;
     transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
   }
   .card-elevated {
-    background: var(--color-card-elevated);
+    background: var(--card-elevated);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--color-card-border);
+    border: 1px solid var(--card-border);
     border-radius: 1rem;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 24px var(--shadow);
   }
   .card-interactive {
-    background: var(--color-card-default);
+    background: var(--card);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--color-card-border);
+    border: 1px solid var(--card-border);
     border-radius: 1rem;
     transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
   }
   .card-interactive:hover {
-    border-color: var(--color-card-border-hover);
+    border-color: var(--card-border-hover);
     transform: translateY(-2px);
     box-shadow: 0 8px 32px rgba(139, 92, 246, 0.12);
   }
@@ -93,7 +167,7 @@
     user-select: none;
     white-space: nowrap;
     position: relative;
-    box-shadow: 0 1px 2px rgba(2, 6, 23, 0.4);
+    box-shadow: 0 1px 2px var(--shadow);
     transition:
       transform 0.15s cubic-bezier(0.4, 0, 0.2, 1),
       box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
@@ -112,7 +186,7 @@
     filter: grayscale(0.2);
   }
   .btn:focus-visible {
-    outline: 2px solid #8b5cf6;
+    outline: 2px solid var(--accent);
     outline-offset: 2px;
   }
 
@@ -137,14 +211,14 @@
   /* Secondary — frosted glass with violet tint */
   .btn-secondary {
     background: rgba(139, 92, 246, 0.12);
-    color: #c4b5fd;
+    color: var(--accent);
     border-color: rgba(139, 92, 246, 0.35);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
   }
   .btn-secondary:hover {
     background: rgba(139, 92, 246, 0.2);
-    color: #ddd6fe;
+    color: var(--accent);
     border-color: rgba(139, 92, 246, 0.55);
     box-shadow: 0 6px 18px rgba(139, 92, 246, 0.22);
   }
@@ -152,24 +226,24 @@
   /* Ghost — quiet, minimal */
   .btn-ghost {
     background: transparent;
-    color: #94a3b8;
+    color: var(--text-secondary);
     border-color: transparent;
     box-shadow: none;
   }
   .btn-ghost:hover {
-    background: rgba(148, 163, 184, 0.12);
-    color: #f1f5f9;
+    background: var(--hover-bg);
+    color: var(--text-primary);
   }
 
   /* Danger — destructive action */
   .btn-danger {
     background: rgba(239, 68, 68, 0.12);
-    color: #f87171;
+    color: #ef4444;
     border-color: rgba(239, 68, 68, 0.35);
   }
   .btn-danger:hover {
     background: rgba(239, 68, 68, 0.22);
-    color: #fca5a5;
+    color: #f87171;
     border-color: rgba(239, 68, 68, 0.6);
     box-shadow: 0 6px 18px rgba(239, 68, 68, 0.25);
   }
@@ -192,14 +266,13 @@
   /* Outline — bordered accent */
   .btn-outline {
     background: transparent;
-    color: #a78bfa;
+    color: var(--accent);
     border-color: rgba(139, 92, 246, 0.6);
     box-shadow: none;
   }
   .btn-outline:hover {
     background: rgba(139, 92, 246, 0.12);
-    color: #ddd6fe;
-    border-color: #8b5cf6;
+    border-color: var(--accent);
   }
 
   .btn-sm { padding: 0.375rem 1rem; font-size: 0.8125rem; border-radius: 0.625rem; }
@@ -208,27 +281,27 @@
   /* ── Form Input ───────────────────────────────────────────────── */
   .form-input {
     width: 100%;
-    background: rgba(15, 23, 42, 0.8);
-    border: 1px solid #334155;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
     border-radius: 0.75rem;
     padding: 0.75rem 1rem;
-    color: #f1f5f9;
+    color: var(--text-primary);
     font-size: 0.9rem;
     outline: none;
     transition: border-color 0.2s, box-shadow 0.2s;
   }
   .form-input:focus {
-    border-color: #8b5cf6;
+    border-color: var(--accent);
     box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
   }
-  .form-input::placeholder { color: #64748b; }
+  .form-input::placeholder { color: var(--text-muted); }
   .form-input.error { border-color: #ef4444; }
 
   .form-label {
     display: block;
     font-size: 0.875rem;
     font-weight: 500;
-    color: #cbd5e1;
+    color: var(--text-secondary);
     margin-bottom: 0.375rem;
   }
 
@@ -244,14 +317,14 @@
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
-  .badge-pending   { background: rgba(234, 179, 8,   0.15); color: #eab308; border: 1px solid rgba(234, 179, 8,   0.3); }
-  .badge-approved  { background: rgba(59,  130, 246, 0.15); color: #3b82f6; border: 1px solid rgba(59,  130, 246, 0.3); }
-  .badge-rejected  { background: rgba(239, 68,  68,  0.15); color: #ef4444; border: 1px solid rgba(239, 68,  68,  0.3); }
-  .badge-active    { background: rgba(34,  197, 94,  0.15); color: #22c55e; border: 1px solid rgba(34,  197, 94,  0.3); }
-  .badge-completed { background: rgba(148, 163, 184, 0.15); color: #94a3b8; border: 1px solid rgba(148, 163, 184, 0.3); }
-  .badge-succeeded { background: rgba(34,  197, 94,  0.15); color: #22c55e; border: 1px solid rgba(34,  197, 94,  0.3); }
-  .badge-failed    { background: rgba(239, 68,  68,  0.15); color: #ef4444; border: 1px solid rgba(239, 68,  68,  0.3); }
-  .badge-refunded  { background: rgba(148, 163, 184, 0.15); color: #94a3b8; border: 1px solid rgba(148, 163, 184, 0.3); }
+  .badge-pending   { background: rgba(234, 179, 8,   0.15); color: #a16207; border: 1px solid rgba(234, 179, 8,   0.35); }
+  .badge-approved  { background: rgba(59,  130, 246, 0.15); color: #1d4ed8; border: 1px solid rgba(59,  130, 246, 0.35); }
+  .badge-rejected  { background: rgba(239, 68,  68,  0.15); color: #dc2626; border: 1px solid rgba(239, 68,  68,  0.35); }
+  .badge-active    { background: rgba(34,  197, 94,  0.15); color: #15803d; border: 1px solid rgba(34,  197, 94,  0.35); }
+  .badge-completed { background: rgba(148, 163, 184, 0.15); color: #475569; border: 1px solid rgba(148, 163, 184, 0.35); }
+  .badge-succeeded { background: rgba(34,  197, 94,  0.15); color: #15803d; border: 1px solid rgba(34,  197, 94,  0.35); }
+  .badge-failed    { background: rgba(239, 68,  68,  0.15); color: #dc2626; border: 1px solid rgba(239, 68,  68,  0.35); }
+  .badge-refunded  { background: rgba(148, 163, 184, 0.15); color: #475569; border: 1px solid rgba(148, 163, 184, 0.35); }
 
   /* ── Skeleton Loader ──────────────────────────────────────────── */
   @keyframes shimmer {
@@ -260,9 +333,9 @@
   }
   .skeleton {
     background: linear-gradient(90deg,
-      rgb(30 41 59)    25%,
-      rgb(51 65 85)    50%,
-      rgb(30 41 59)    75%
+      var(--surface-raised) 25%,
+      color-mix(in srgb, var(--surface-raised) 70%, var(--text-secondary)) 50%,
+      var(--surface-raised) 75%
     );
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite;
@@ -280,6 +353,6 @@
 
 /* ── Scrollbar (webkit) ───────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: #0f172a; }
-::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #8b5cf6; }
+::-webkit-scrollbar-track { background: var(--scroll-track); }
+::-webkit-scrollbar-thumb { background: var(--scroll-thumb); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }

@@ -11,7 +11,6 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import { UserPlus, Eye, EyeOff } from "lucide-react";
-import type { Metadata } from "next";
 
 // ── Zod schema mirrors backend auth.validation.ts ────────────────────────────
 const registerSchema = z.object({
